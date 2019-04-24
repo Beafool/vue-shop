@@ -57,7 +57,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
-    // copy custom static assets
+    // copy custom static api
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
