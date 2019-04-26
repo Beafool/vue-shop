@@ -1,7 +1,7 @@
 <template>
   <section class="msite">
     <!--首页头部-->
-    <Header title="xxxx">
+    <Header :title="address.name || `正在获取中...`">
       <span class="header_search" slot="left">
         <i class="iconfont icon-sousuo"></i>
       </span>
@@ -130,6 +130,7 @@
   </section>
 </template>
 <script>
+  import {mapState} from 'vuex'
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.css'
 
@@ -147,6 +148,9 @@
       })
     },
 
+    computed:{
+      ...mapState(['address'])
+    },
     components: {
       ShopList
     }

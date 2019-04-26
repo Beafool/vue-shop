@@ -8,11 +8,10 @@
 <script>
   import FooterGuide from './components/FooterGuide/FooterGuide'
 
-  import {reqAddress} from './api'
+
 export default {
    async mounted(){
-      const result = await reqAddress('115.36867','23.10038')
-     console.log('result',result)
+     this.$store.dispatch(`getAddress`)
     },
 
     components:{
