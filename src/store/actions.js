@@ -38,10 +38,10 @@ export default {
   获取商家列表的异步action
 
  */
-  async getShops({comit,state}){
+  async getShops({commit,state}){
     const {longitude,latitude} = state
     //1.执行异步请求
-    const result =await reqCategorys()
+    const result =await reqShops({longitude,latitude})
     //2.根据结果，提交mutation
     if (result.code===0){
       const shops =result.data

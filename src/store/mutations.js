@@ -10,6 +10,6 @@ export default {
     state.shops = shops
   },
   [RECEIVE_CATEGORYS](state,categorys){
-    state.category = categorys
+    state.categorys = categorys
   }
 }
