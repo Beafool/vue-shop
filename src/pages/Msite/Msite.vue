@@ -43,7 +43,7 @@
   import Swiper from 'swiper'
   import 'swiper/dist/css/swiper.css'
 
-  import ShopList from '../../components/ShopList/ShopList.vue'
+  import ShopList from '../../components/ShopList/ShopList'
 
   export default {
     mounted() {
