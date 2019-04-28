@@ -57,7 +57,7 @@
   </section>
 </template>
 <script>
-  import {reqShops} from '../../api'
+  import {reqCode} from '../../api'
 
   export default {
     data(){
@@ -95,7 +95,7 @@
          }
        },1000)
 
-       /*   //请求发送验证码
+          //请求发送验证码
        const result = await reqCode(this.phone)
        if (result.code===0){//成功
          alert('发送短信验证码成功')
@@ -103,7 +103,7 @@
          //停止计时
          this.computeTime = 0
          alert('发送短信验证码失败')
-       }*/
+       }
       },
 
        /*
