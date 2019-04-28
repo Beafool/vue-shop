@@ -132,7 +132,13 @@
               }
             //全部通过了，发送密码登录的请求
              result =await reqPwdLogin({name,pwd,captcha})
-          }
+
+            //如果失败了，更新验证码
+              if (result.code!==0) {
+                  this.updateCaptcha()
+                  this.captcha =''
+              }
+            }
             //根据结果做相应处理
             if (result.code ===0){//成功了
                const user =result.data

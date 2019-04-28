@@ -2,9 +2,9 @@
 包含n个用于间接更新状态数据方法的对象
  */
 
-import {reqAddress, reqCategorys, reqShops, reqUser} from '../api'
+import {reqAddress, reqCategorys, reqLogout, reqShops, reqUser} from '../api'
 
-import {RECEIVE_ADDRESS, RECEIVE_CATEGORYS, RECEIVE_SHOPS,RECEIVE_USER} from './mutations-types'
+import {RECEIVE_ADDRESS, RECEIVE_CATEGORYS, RECEIVE_SHOPS,RECEIVE_USER,RESET_USER} from './mutations-types'
 
 export default {
 /*
@@ -57,7 +57,16 @@ export default {
      const user = result.data
      commit(RECEIVE_USER,user)
    }
- }
+ },
+  /*
+  退出登录的异步action
+   */
+  async logout({commit}){
+    const result = await reqLogout()
+    if (result.code===0){
+      commit (RESET_USER)
+    }
+  }
 
 
 }
