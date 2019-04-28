@@ -12,13 +12,13 @@
         <form>
           <div :class="{on:isShowSms}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <input type="text" maxlength="11" placeholder="手机号" v-model="phone">
               <button :disabled="!isRightPhone || computeTime>0" class="get_verification" :class="{right_phone_number:isRightPhone}" @click.prevent="sendCode">
                 {{computeTime>0 ? `已发送(${computeTime}s)` :`获取验证码`}}
               </button>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="text" maxlength="8" placeholder="验证码" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -28,10 +28,10 @@
           <div :class="{on:!isShowSms}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="text" maxlength="11" placeholder="用户名" v-model="name">
               </section>
               <section class="login_verification">
-                <input :type="isShowPwd ? `text`:`password`" maxlength="8" placeholder="密码">
+                <input :type="isShowPwd ? `text`:`password`" maxlength="8" placeholder="密码" v-model="pwd">
 
                 <div class="switch_button":class="isShowPwd ? `on`:`off`" @click="isShowPwd=!isShowPwd">
                   <div class="switch_circle" :class="{right:isShowPwd}"></div>
@@ -41,12 +41,12 @@
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -95,7 +95,7 @@
          }
        },1000)
 
-     /*  //请求发送验证码
+   /*   //请求发送验证码
        const result = await reqCode(this.phone)
        if (result.code===0){//成功
          alert('发送短信验证码成功')
@@ -111,7 +111,25 @@
    */
 
       async login(){
+          //进行前台表单验证， 如果不通过，提示令牌
+          const {phone , code ,name ,pwd ,captcha ,isShowSms,isRightPhone} = this
+          if (isShowSms){//如果是密码登录
+            if (!isRightPhone) {
+              return  alert('必须是一个正确的手机号')
+            }else if (/^\d{6}$/.test(code)){
+              return  alert('验证码必须是6位')
+            }
+          }else {//如果是密码登录
+              if (!name.trim()){
+                return  alert('必须输入用户名')
+              }else if (!pwd.trim()){
+                return  alert('必须输入密码')
+              } else if (!/^.{4}$/.test(captcha)){
+                return  alert('验证码必须是4位')
+              }
 
+          }
+          //如果全部通过，发送登陆请求
       }
     }
   }
