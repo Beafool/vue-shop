@@ -12,8 +12,10 @@
         <form>
           <div :class="{on:isShowSms}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+              <button :disabled="!isRightPhone || computeTime>0" class="get_verification" :class="{right_phone_number:isRightPhone}" @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` :`获取验证码`}}
+              </button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -52,10 +54,61 @@
   </section>
 </template>
 <script>
+  import {reqShops} from '../../api'
+
   export default {
     data(){
       return{
         isShowSms:true,  //短信登录，false:密码登录
+        phone:'',//手机号
+        code:'',//一次性短信验证码
+        name:'',//用户名
+        pwd:'',//密码
+        captcha:'',//一次性图片验证码
+        computeTime:'',//倒计时剩余时间
+        isShowPwd:false,//是否原样显示密码
+      }
+    },
+    computed:{
+      //判断phone是否是正确的手机号格式：使用正则
+      isRightPhone(){
+          return /^1\d{10}$/.test(this.phone)
+      }
+    },
+    methods:{
+      /*
+      发送短信验证
+       */
+     async sendCode(){
+        //alert('----')
+       this.computeTime =30
+       //启动循环定时器，每隔1秒，将计时-1
+       const intervalId = setInterval(()=>{
+         //一旦变为了0，停止计时
+         if (this.computeTime ===0){
+           clearInterval(intervalId)
+         } else {
+           this.computeTime--
+         }
+       },1000)
+
+     /*  //请求发送验证码
+       const result = await reqCode(this.phone)
+       if (result.code===0){//成功
+         alert('发送短信验证码成功')
+       } else {//失败
+         //停止计时
+         this.computeTime = 0
+         alert('发送短信验证码失败')
+       }*/
+      },
+
+  /*
+    登陆
+   */
+
+      async login(){
+
       }
     }
   }
@@ -122,6 +175,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone_number
+                  color black
             .login_verification
               position relative
               margin-top 16px
