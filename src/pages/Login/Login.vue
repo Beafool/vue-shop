@@ -57,7 +57,7 @@
   </section>
 </template>
 <script>
-  import {reqCode} from '../../api'
+  import {reqCode,reqPwdLogin,reqSmsLogin} from '../../api'
 
   export default {
     data(){
@@ -113,12 +113,15 @@
       async login(){
           //进行前台表单验证， 如果不通过，提示令牌
           const {phone , code ,name ,pwd ,captcha ,isShowSms,isRightPhone} = this
+         let result
           if (isShowSms){//如果是密码登录
             if (!isRightPhone) {
               return  alert('必须是一个正确的手机号')
-            }else if (/^\d{6}$/.test(code)){
-              return  alert('验证码必须是6位')
+            }else if (!/^\d{6}$/.test(code)){
+              return  alert('验证码必须是6位数字')
             }
+            //全部通过了，发送短信登录的请求
+           result =await reqSmsLogin({phone,code})
           }else {//如果是密码登录
               if (!name.trim()){
                 return  alert('必须输入用户名')
@@ -127,9 +130,19 @@
               } else if (!/^.{4}$/.test(captcha)){
                 return  alert('验证码必须是4位')
               }
-
+            //全部通过了，发送密码登录的请求
+             result =await reqPwdLogin({name,pwd,captcha})
           }
-          //如果全部通过，发送登陆请求
+            //根据结果做相应处理
+            if (result.code ===0){//成功了
+               const user =result.data
+              //保存user(vuex的state中)
+
+              //跳转到个人中心界面
+              this.$router.replace('/profile')
+            }else {//失败了
+              alert(result.msg)
+            }
       },
 
       /*
