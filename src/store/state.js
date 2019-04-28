@@ -8,4 +8,5 @@ export default {
   categorys:[],  //商品分类数组
   shops:[],     //商家数组
 
+  user: {}, //登陆用户信息对象
 }

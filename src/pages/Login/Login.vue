@@ -58,7 +58,7 @@
 </template>
 <script>
   import {reqCode,reqPwdLogin,reqSmsLogin} from '../../api'
-
+  import {RECEIVE_USER} from '../../store/mutations-types'
   export default {
     data(){
       return{
@@ -137,7 +137,7 @@
             if (result.code ===0){//成功了
                const user =result.data
               //保存user(vuex的state中)
-
+              this.$store.commit(RECEIVE_USER, user)
               //跳转到个人中心界面
               this.$router.replace('/profile')
             }else {//失败了
