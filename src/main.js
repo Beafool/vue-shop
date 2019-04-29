@@ -5,6 +5,7 @@ import router from './router'
 import Header from './components/Header/Header'
 import Star from './components/Star/star'
 import store from './store'
+import './validate'
 //注册全局组件
 
 Vue.component('Header',Header)
